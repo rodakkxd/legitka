@@ -92,8 +92,49 @@
             box-shadow: 0 4px 10px rgba(242, 102, 34, 0.2);
         }
 
-        .btn-save:active {
-            opacity: 0.8;
+        .photo-upload-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .photo-preview {
+            width: 100px;
+            height: 133px;
+            background-color: #e2e8f0;
+            border-radius: 12px;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8e8e93;
+            font-size: 13px;
+            margin-bottom: 12px;
+            border: 1px dashed var(--border-color);
+            overflow: hidden;
+        }
+
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .btn-upload {
+            background-color: #f2f2f7;
+            color: var(--accent-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+        }
+
+        #photoInput {
+            display: none;
         }
     </style>
 </head>
@@ -106,6 +147,14 @@
     </div>
 
     <form id="editForm">
+        <div class="photo-upload-container">
+            <div class="photo-preview" id="photoPreview">
+                <span id="previewText">Brak zdjęcia</span>
+            </div>
+            <label for="photoInput" class="btn-upload">Wybierz zdjęcie</label>
+            <input type="file" id="photoInput" accept="image/*">
+        </div>
+
         <div class="form-group">
             <div class="input-row">
                 <label for="firstName">Imię (imiona)</label>
@@ -148,7 +197,24 @@
 
     <script>
         const form = document.getElementById('editForm');
+        const photoInput = document.getElementById('photoInput');
+        const photoPreview = document.getElementById('photoPreview');
+        const previewText = document.getElementById('previewText');
+        let base64Photo = '';
         
+        // Handle photo selection
+        photoInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    base64Photo = event.target.result;
+                    photoPreview.innerHTML = `<img src="${base64Photo}" alt="Podgląd">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
         // Load existing data
         window.addEventListener('load', () => {
             const savedData = localStorage.getItem('legitymacjaData');
@@ -161,6 +227,11 @@
                 document.getElementById('idNumber').value = data.idNumber || '';
                 document.getElementById('issueDate').value = data.issueDate || '';
                 document.getElementById('expiryDate').value = data.expiryDate || '';
+                
+                if (data.photo) {
+                    base64Photo = data.photo;
+                    photoPreview.innerHTML = `<img src="${base64Photo}" alt="Podgląd">`;
+                }
             } else {
                 // Default values if no data in localStorage
                 document.getElementById('firstName').value = 'KRZYSZTOF';
@@ -182,7 +253,8 @@
                 pesel: document.getElementById('pesel').value,
                 idNumber: document.getElementById('idNumber').value,
                 issueDate: document.getElementById('issueDate').value,
-                expiryDate: document.getElementById('expiryDate').value
+                expiryDate: document.getElementById('expiryDate').value,
+                photo: base64Photo
             };
             localStorage.setItem('legitymacjaData', JSON.stringify(formData));
             window.location.href = 'legitymacja.html';

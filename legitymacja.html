@@ -119,19 +119,10 @@
             background-color: #e2e8f0;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #888;
-            font-size: 11px;
-            text-align: center;
+            display: block;
+            object-fit: cover;
             overflow: hidden;
             position: relative;
-        }
-        
-        /* Zastępcza grafika dla profilowego */
-        .profile-pic::before {
-            content: "Zdjęcie";
         }
 
         .flag {
@@ -343,7 +334,7 @@
             <div class="id-content">
                 <!-- Lewa kolumna: Grafiki -->
                 <div class="left-col">
-                    <div class="profile-pic"></div>
+                    <img src="xd.jpg" class="profile-pic" id="val-photo" alt="Zdjęcie profilowe">
                     
                     <img src="flaga.gif" alt="Flaga Polski" class="flag">
 
@@ -461,6 +452,10 @@
                 document.getElementById('val-idNumber').textContent = data.idNumber;
                 document.getElementById('val-issueDate').textContent = data.issueDate;
                 document.getElementById('val-expiryDate').textContent = data.expiryDate;
+                
+                if (data.photo) {
+                    document.getElementById('val-photo').src = data.photo;
+                }
             }
         });
 
