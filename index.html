@@ -67,16 +67,20 @@
 
         /* Card styles */
         .card {
-            background: var(--card-gradient);
+            background-color: transparent;
             border-radius: 20px;
-            padding: 24px 20px;
-            min-height: 220px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: none; /* Removed shadow since it might look bad with blending */
+        }
+
+        .card-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            mix-blend-mode: multiply;
         }
 
         .card-top {
@@ -155,11 +159,7 @@
         <!-- Karta -->
         <a href="legitymacja.html" style="text-decoration: none; color: inherit; display: block;">
             <div class="card">
-                <div class="card-top">
-                    <span class="card-title">Legitymacja szkolna</span>
-                    <!-- Godło w prawym górnym rogu karty -->
-                    <img src="orzel.png" alt="Godło" class="card-godlo">
-                </div>
+                <img src="card.png" alt="Legitymacja" class="card-img">
             </div>
         </a>
     </div>
